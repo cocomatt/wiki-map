@@ -39,7 +39,6 @@ app.use(express.static("public"));
 app.use("/api/users", usersRoutes(knex));
 
 
-
 const allAppGets = () => {
 
 
@@ -59,25 +58,27 @@ const allAppGets = () => {
    * 	PROMISES: Show maps, titles and markers even if user isn't logged in
    ************************************************************************/
   app.get("/maps", (req, res) => {
- 
-
-  	//ALL MAPS OBJECT
+    //ALL MAPS OBJECT
     let templateVars = {
+      user: "req.session.id",
       "id": {
         mapId: "id",
         title: "dog map",
         description: "this is my map",
         favorite: 0,
         "markerId": {
-      	  markerId: "id"
-      	  lon: 0, 
-      	  lan: 0,
-      	  title: "starbucks"
-      	}
+          markerId: "id",
+          x: 0, 
+          y: 0,
+          z: 0,
+          title: "starbucks"
+        }
       }
     }
 
-    res.render("maps", templateVars);
+  console.log(templateVars.user);
+
+    res.render("maps", user);
   });
 
 
@@ -91,18 +92,18 @@ const allAppGets = () => {
 
   	//USER ID, ALL MAPS AND MARKERS CONTAINED OBJECT
     let templateVars = {
-      userId: req.session.id
       "id": {
         mapId: "id",
         title: "dog map",
         description: "this is my map",
         favorite: 0,
         "markerId": {
-      	  markerId: "id"
-      	  lon: 0, 
-      	  lan: 0,
-      	  title: "starbucks"
-      	}
+          markerId: "id",
+          x: 0, 
+          y: 0,
+          z: 0,
+          title: "starbucks"
+        }
       }
     }
 
@@ -132,18 +133,18 @@ const allAppGets = () => {
 
   	//USER ID, ALL MAPS AND MARKERS CONTAINED OBJECT
     let templateVars = {
-      userId: req.session.id
       "id": {
         mapId: "id",
         title: "dog map",
         description: "this is my map",
         favorite: 0,
         "markerId": {
-      	  markerId: "id"
-      	  lon: 0, 
-      	  lan: 0,
-      	  title: "starbucks"
-      	}
+          markerId: "id",
+          x: 0, 
+          y: 0,
+          z: 0,
+          title: "starbucks"
+        }
       }
     }
 
@@ -166,36 +167,35 @@ allAppGets();
 
 
 
-const allAppUpdates = () => {
+
+
+const allAppPosts = () => {
   /* EDIT MAP
    * 	REQUIRES: User session and map title, id, array of markers
    * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
    ************************************************************************************/
-  app.update("/map/:id/edit", (req, res) => {
+  app.post("/map/:id/edit", (req, res) => {
 
 
   	//SPECIFIC MAP OBJECT WITH ALL MARKERS CONTAINED
     let templateVars = {
-      mapId: "id",
-      title: "dog map",
-      description: "this is my map",
-      favorite: 0,
-      "markerId": {
-      	  markerId: "id"
-      	  lon: 0, 
-      	  lan: 0,
-      	  title: "starbucks"
+      "id": {
+        mapId: "id",
+        title: "dog map",
+        description: "this is my map",
+        favorite: 0,
+        "markerId": {
+          markerId: "id",
+          x: 0, 
+          y: 0,
+          z: 0,
+          title: "starbucks"
+        }
       }
     }
 
     res.redirect("/maps/:id", templateVars);
   });
-}
-allAppUpdates();
-
-
-
-const allAppPosts = () => {
 
 
 
