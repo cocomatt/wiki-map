@@ -27,9 +27,9 @@ function initMap() {
 
 function findMap(id) {
   knex
-    .select(*)
+    .select('*')
     .from('maps')
-    .asCallback((err, rows), => {
+    .asCallback((err, rows) => {
        initSpecificMap(rows)
     });
 }
@@ -50,10 +50,11 @@ $(() => {
   }).done((users) => {
     for(user of users) {
       $("<div>").text(user.name).appendTo($("body"));
+      console.log(user);
     }
   });;
 
-  initSpecificMap();
+   initMap();
 
 });
 
