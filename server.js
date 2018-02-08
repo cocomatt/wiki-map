@@ -38,10 +38,171 @@ app.use(express.static("public"));
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
 
-// Home page
-app.get("/", (req, res) => {
-  res.render("index");
-});
+
+
+const allAppGets = () => {
+
+
+
+  /* LANDING PAGE
+   * 	REQUIRES: (empty)
+   * 	PROMISES: Redirects to all maps
+   ***********************************/
+  app.get("/", (req, res) => {
+    res.redirect('/maps');
+  });
+
+
+
+  /* SHOW ALL MAPS
+   * 	REQUIRES: User session to create, edit and favorite a map
+   * 	PROMISES: Show maps, titles and markers even if user isn't logged in
+   ************************************************************************/
+  app.get("/maps", (req, res) => {
+ 
+
+
+    let templateVars = {
+      urls: userSpecificURLS,
+      username: userDatabase[req.session.user_id]
+    }
+
+    res.render("maps", templateVars);
+  });
+
+
+
+  /* SHOW SPECIFIC MAP
+   * 	REQUIRES: User session to create, edit and favorite a map
+   * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
+   ************************************************************************************/
+  app.get("/maps/:id", (req, res) => {
+
+
+
+    let templateVars = {
+      urls: userSpecificURLS,
+      username: userDatabase[req.session.user_id]
+    }
+
+    res.render("maps_id", templateVars);
+  });
+
+
+
+  /* SHOW SPECIFIC MAP
+   * 	REQUIRES: User session to create, edit and favorite a map
+   * 	PROMISES: Specific user shown with username, icon, maps created(titles and markers) and maps favroited
+   **********************************************************************************************************/
+  app.get("/user/:id", (req, res) => {
+
+
+
+    let templateVars = {
+      urls: userSpecificURLS,
+      username: userDatabase[req.session.user_id]
+    }
+
+    res.render("user_id", templateVars);
+  });
+}
+allAppGets();
+
+
+
+const allAppUpdates = () => {
+  /* EDIT MAP
+   * 	REQUIRES: User session to create, edit and favorite a map
+   * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
+   ************************************************************************************/
+  app.update("/map/:id/edit", (req, res) => {
+
+
+
+    let templateVars = {
+      urls: userSpecificURLS,
+      username: userDatabase[req.session.user_id]
+    }
+
+    res.render("edit_map", templateVars);
+  });
+}
+allAppUpdates();
+
+
+
+const allAppPosts = () => {
+
+
+
+  /* CREATE NEW MAP
+   * 	REQUIRES: User session to create, edit and favorite a map
+   * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
+   *************************************************************************************/
+  app.post("/map/:id/new", (req, res) => {
+
+
+    res.redirect('/map');
+  });
+
+
+
+  /* HEADER BAR LOGIN REQUEST
+   * 	REQUIRES: User exists with password
+   * 	PROMISES: Encrypted user session with cookie
+   *************************************************/
+  app.post("/login", (req, res) => {
+
+
+
+    let templateVars = {
+      urls: userSpecificURLS,
+      username: userDatabase[req.session.user_id]
+    }
+
+    res.render("index", templateVars);
+  });
+}
+allAppPosts();
+
+
+
+const allAppDeletes = () => {
+
+
+
+  /* HEADER BAR LOGOUT
+   * 	REQUIRES: User session exists with cookie
+   * 	PROMISES: User session terminated
+   **************************************/
+  app.delete("/user/:id/delete", (req, res) => {
+
+
+
+    let templateVars = {
+      urls: userSpecificURLS,
+      username: userDatabase[req.session.user_id]
+    }
+
+    res.render("index", templateVars);
+  });
+
+
+
+  /* DELETE MAP
+   * 	REQUIRES: User session to create, edit and favorite a map
+   * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
+   *************************************************************************************/
+  app.update("/map/:id/delete", (req, res) => {
+
+    let templateVars = {
+      urls: userSpecificURLS,
+      username: userDatabase[req.session.user_id]
+    }
+
+    res.render("edit_map", templateVars);
+  });
+}
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
