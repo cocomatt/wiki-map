@@ -64,10 +64,16 @@ const allAppGets = () => {
   	//ALL MAPS OBJECT
     let templateVars = {
       "id": {
-        mapId: "id"
-        mapTitles: "titles",
-        mapFavs: 0,
-        mapDescriptions: "description"
+        mapId: "id",
+        title: "dog map",
+        description: "this is my map",
+        favorite: 0,
+        "markerId": {
+      	  markerId: "id"
+      	  lon: 0, 
+      	  lan: 0,
+      	  title: "starbucks"
+      	}
       }
     }
 
@@ -83,12 +89,21 @@ const allAppGets = () => {
   app.get("/maps/:id", (req, res) => {
 
 
-  	//SPECIFIC MAP OBJECT
+  	//USER ID, ALL MAPS AND MARKERS CONTAINED OBJECT
     let templateVars = {
-      mapId: "id"
-      mapTitles: "titles",
-      mapFavs: 0,
-      mapDescriptions: "description"
+      userId: req.session.id
+      "id": {
+        mapId: "id",
+        title: "dog map",
+        description: "this is my map",
+        favorite: 0,
+        "markerId": {
+      	  markerId: "id"
+      	  lon: 0, 
+      	  lan: 0,
+      	  title: "starbucks"
+      	}
+      }
     }
 
     res.render("maps_id", templateVars);
@@ -115,13 +130,20 @@ const allAppGets = () => {
   app.get("/user/:id", (req, res) => {
 
 
-  	//ALL MAPS OBJECT
+  	//USER ID, ALL MAPS AND MARKERS CONTAINED OBJECT
     let templateVars = {
+      userId: req.session.id
       "id": {
-        mapId: "id"
-        mapTitles: "titles",
-        mapFavs: 0,
-        mapDescriptions: "description"
+        mapId: "id",
+        title: "dog map",
+        description: "this is my map",
+        favorite: 0,
+        "markerId": {
+      	  markerId: "id"
+      	  lon: 0, 
+      	  lan: 0,
+      	  title: "starbucks"
+      	}
       }
     }
 
@@ -146,19 +168,24 @@ allAppGets();
 
 const allAppUpdates = () => {
   /* EDIT MAP
-   * 	REQUIRES: User session to create, edit and favorite a map
+   * 	REQUIRES: User session and map title, id, array of markers
    * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
    ************************************************************************************/
   app.update("/map/:id/edit", (req, res) => {
 
 
-  	//SPECIFIC MAP OBJECT
+  	//SPECIFIC MAP OBJECT WITH ALL MARKERS CONTAINED
     let templateVars = {
-      id: "id",
+      mapId: "id",
       title: "dog map",
-      markers: [],
       description: "this is my map",
-      favorite: 0
+      favorite: 0,
+      "markerId": {
+      	  markerId: "id"
+      	  lon: 0, 
+      	  lan: 0,
+      	  title: "starbucks"
+      }
     }
 
     res.redirect("/maps/:id", templateVars);
@@ -191,7 +218,7 @@ const allAppPosts = () => {
 
 
   /* SEND HEADER BAR LOGIN
-   * 	REQUIRES: User exists with password
+   * 	REQUIRES: All users that exist in an appended object
    * 	PROMISES: Encrypted user session with cookie
    *************************************************/
   app.post("/login", (req, res) => {
@@ -218,7 +245,7 @@ const allAppDeletes = () => {
 
 
   /* SEND USER LOGOUT REQUEST
-   * 	REQUIRES: User session id and email
+   * 	REQUIRES: User session email
    * 	PROMISES: User session terminated, redirected to maps page
    **************************************/
   app.delete("/user/:id/delete", (req, res) => {
