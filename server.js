@@ -44,7 +44,7 @@ const allAppGets = () => {
 
 
 
-  /* LANDING PAGE
+  /* REDIRECT PAGE
    * 	REQUIRES: (empty)
    * 	PROMISES: Redirects to all maps
    ***********************************/
@@ -54,17 +54,21 @@ const allAppGets = () => {
 
 
 
-  /* SHOW ALL MAPS
+  /* SHOW ALL MAPS PAGE
    * 	REQUIRES: User session to create, edit and favorite a map
    * 	PROMISES: Show maps, titles and markers even if user isn't logged in
    ************************************************************************/
   app.get("/maps", (req, res) => {
  
 
-
+  	//ALL MAPS OBJECT
     let templateVars = {
-      urls: userSpecificURLS,
-      username: userDatabase[req.session.user_id]
+      "id": {
+        mapId: "id"
+        mapTitles: "titles",
+        mapFavs: 0,
+        mapDescriptions: "description"
+      }
     }
 
     res.render("maps", templateVars);
@@ -72,17 +76,19 @@ const allAppGets = () => {
 
 
 
-  /* SHOW SPECIFIC MAP
+  /* SHOW SPECIFIC MAP PAGE
    * 	REQUIRES: User session to create, edit and favorite a map
    * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
    ************************************************************************************/
   app.get("/maps/:id", (req, res) => {
 
 
-
+  	//SPECIFIC MAP OBJECT
     let templateVars = {
-      urls: userSpecificURLS,
-      username: userDatabase[req.session.user_id]
+      mapId: "id"
+      mapTitles: "titles",
+      mapFavs: 0,
+      mapDescriptions: "description"
     }
 
     res.render("maps_id", templateVars);
@@ -90,20 +96,48 @@ const allAppGets = () => {
 
 
 
-  /* SHOW SPECIFIC MAP
+  /* CREATE NEW MAP PAGE
+   * 	REQUIRES: User session to create, edit and favorite a map
+   * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
+   *************************************************************************************/
+  app.get("/map/:id/new", (req, res) => {
+
+
+    res.render('new_map');
+  });
+
+
+
+  /* SHOW SPECIFIC USER PAGE
    * 	REQUIRES: User session to create, edit and favorite a map
    * 	PROMISES: Specific user shown with username, icon, maps created(titles and markers) and maps favroited
    **********************************************************************************************************/
   app.get("/user/:id", (req, res) => {
 
 
-
+  	//ALL MAPS OBJECT
     let templateVars = {
-      urls: userSpecificURLS,
-      username: userDatabase[req.session.user_id]
+      "id": {
+        mapId: "id"
+        mapTitles: "titles",
+        mapFavs: 0,
+        mapDescriptions: "description"
+      }
     }
 
     res.render("user_id", templateVars);
+  });
+
+
+
+  /* REGISTRATION PAGE
+   * 	REQUIRES: User is not currently registered
+   * 	PROMISES: User is redirected to registration page
+   *****************************************************/
+  app.get("/user/:id/new", (req, res) => {
+
+
+    res.render("register");
   });
 }
 allAppGets();
@@ -118,13 +152,16 @@ const allAppUpdates = () => {
   app.update("/map/:id/edit", (req, res) => {
 
 
-
+  	//SPECIFIC MAP OBJECT
     let templateVars = {
-      urls: userSpecificURLS,
-      username: userDatabase[req.session.user_id]
+      id: "id",
+      title: "dog map",
+      markers: [],
+      description: "this is my map",
+      favorite: 0
     }
 
-    res.render("edit_map", templateVars);
+    res.redirect("/maps/:id", templateVars);
   });
 }
 allAppUpdates();
@@ -135,32 +172,41 @@ const allAppPosts = () => {
 
 
 
-  /* CREATE NEW MAP
-   * 	REQUIRES: User session to create, edit and favorite a map
-   * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
-   *************************************************************************************/
-  app.post("/map/:id/new", (req, res) => {
+  /* SEND USER REGISTRATION
+   * 	REQUIRES: User inputs username, email and password
+   * 	PROMISES: Account generated, encrypted password, and session created at new profile
+   ***************************************************************************************/
+  app.post("/register", (req, res) => {
 
 
-    res.redirect('/map');
+  	//SPECIFIC USER OBJECT
+    let templateVars = {
+      id: "id",
+      email: "admin@google.com",
+      password: "123EZPZ"
+    }
+
+    res.redirect("/user/:id", templateVars);
   });
 
 
-
-  /* HEADER BAR LOGIN REQUEST
+  /* SEND HEADER BAR LOGIN
    * 	REQUIRES: User exists with password
    * 	PROMISES: Encrypted user session with cookie
    *************************************************/
   app.post("/login", (req, res) => {
 
 
-
+  	//ALL USER OBJECT
     let templateVars = {
-      urls: userSpecificURLS,
-      username: userDatabase[req.session.user_id]
+      "id": {
+      	id: "id",
+      	email: "admin@google.com",
+      	password: "123EZPZ"
+      }
     }
 
-    res.render("index", templateVars);
+    res.render("/user/:id", templateVars);
   });
 }
 allAppPosts();
@@ -171,38 +217,40 @@ const allAppDeletes = () => {
 
 
 
-  /* HEADER BAR LOGOUT
-   * 	REQUIRES: User session exists with cookie
-   * 	PROMISES: User session terminated
+  /* SEND USER LOGOUT REQUEST
+   * 	REQUIRES: User session id and email
+   * 	PROMISES: User session terminated, redirected to maps page
    **************************************/
   app.delete("/user/:id/delete", (req, res) => {
 
 
-
+  	//SPECIFIC USER OBJECT
     let templateVars = {
-      urls: userSpecificURLS,
-      username: userDatabase[req.session.user_id]
+      email: req.session.email,
     }
 
-    res.render("index", templateVars);
+    res.redirect("/maps", templateVars);
   });
 
 
 
-  /* DELETE MAP
-   * 	REQUIRES: User session to create, edit and favorite a map
-   * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
-   *************************************************************************************/
-  app.update("/map/:id/delete", (req, res) => {
+  /* SEND DELETE MAP REQUEST
+   * 	REQUIRES: User session email and map id to be deleted
+   * 	PROMISES: Map deleted user redirected to all maps created
+   **************************************************************/
+  app.delete("/map/:id/delete", (req, res) => {
 
+
+  	//SPECIFIC MAP USER HYBRID
     let templateVars = {
-      urls: userSpecificURLS,
-      username: userDatabase[req.session.user_id]
+      mapId: "id",
+      email: req.session.email
     }
 
-    res.render("edit_map", templateVars);
+    res.redirect("/user/:id", templateVars);
   });
 }
+allAppDeletes();
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
