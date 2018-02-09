@@ -21,7 +21,18 @@ map.on('click', (e) => {
 }
 
 $(document).ready(function () {
-
+  $.ajax({
+    url: '/tweets',
+    method: 'GET',
+    success: function(tweets) {
+      $('#tweets-container').empty();
+      console.log("success");
+      renderTweets(tweets);
+    },
+    error: function(err) {
+      console.log(err);
+    }
+  });
 
 
 
