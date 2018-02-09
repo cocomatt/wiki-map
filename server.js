@@ -18,7 +18,7 @@ const bcrypt        = require('bcrypt')
 
 app.use(cookieSession({
   name: 'session',
-  keys: [process.env.SECRET_KEY || 'dvelopment']
+  keys: ['user_id']
 }))
 
 // Seperated Routes for each Resource
@@ -50,7 +50,7 @@ app.use("/api/maps", mapsRoutes(knex));
 const queryEzPz = (table, key, value) => {
   knex.select("*")
       .from(`${table}`)
-      .where(`${attribute}, like, ${key}`)
+      .where(`${value}, like, ${key}`)
       .then((result) => {
         return result;
   });
@@ -85,10 +85,8 @@ const loginEzPz = (user, pass) => {
    * 	PROMISES: Show maps, titles and markers even if user isn't logged in
    ************************************************************************/
   app.get("/maps", (req, res) => {
-
-
-
-    res.render("maps", {users: queryEzPz(users, email, req.session.id)});
+    
+    res.render("maps", {users: queryEzPz(users, name, email)});
   });
 
 
@@ -98,8 +96,7 @@ const loginEzPz = (user, pass) => {
    * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
    ************************************************************************************/
   app.get("/maps/:id", (req, res) => {
-    let userArr = requestUserParams();
-    let mapArr = requestMapParams();
+
 
 
 
@@ -113,8 +110,7 @@ const loginEzPz = (user, pass) => {
    * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
    *************************************************************************************/
   app.get("/map/:id/new", (req, res) => {
-    let userArr = requestUserParams();
-    let mapArr = requestMapParams();
+
 
 
     res.render('new_map', {users: userArr});
@@ -127,8 +123,7 @@ const loginEzPz = (user, pass) => {
    * 	PROMISES: Specific user shown with username, icon, maps created(titles and markers) and maps favroited
    **********************************************************************************************************/
   app.get("/user/:id", (req, res) => {
-    let userArr = requestUserParams();
-    let mapArr = requestMapParams();
+
 
 
     res.render("user_id", {users: userArr});
@@ -148,7 +143,7 @@ const loginEzPz = (user, pass) => {
 
 
 
-const allAppPosts = () => {
+
   /* EDIT MAP
    * 	REQUIRES: User session and map title, id, array of markers
    * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
@@ -156,22 +151,6 @@ const allAppPosts = () => {
   app.post("/map/:id/edit", (req, res) => {
 
 
-  	//SPECIFIC MAP OBJECT WITH ALL MARKERS CONTAINED
-    let templateVars = {
-      "id": {
-        mapId: "id",
-        title: "dog map",
-        description: "this is my map",
-        favorite: 0,
-        "markerId": {
-          markerId: "id",
-          x: 0, 
-          y: 0,
-          z: 0,
-          title: "starbucks"
-        }
-      }
-    }
 
     res.redirect("/maps/:id", templateVars);
   });
@@ -185,12 +164,6 @@ const allAppPosts = () => {
   app.post("/register", (req, res) => {
 
 
-  	//SPECIFIC USER OBJECT
-    let templateVars = {
-      id: "id",
-      email: "admin@google.com",
-      password: "123EZPZ"
-    }
 
     res.redirect("/user/:id", templateVars);
   });
@@ -203,23 +176,10 @@ const allAppPosts = () => {
   app.post("/login", (req, res) => {
 
 
-  	//ALL USER OBJECT
-    let templateVars = {
-      "id": {
-      	id: "id",
-      	email: "admin@google.com",
-      	password: "123EZPZ"
-      }
-    }
 
     res.render("/user/:id", templateVars);
   });
 }
-allAppPosts();
-
-
-
-const allAppDeletes = () => {
 
 
 
@@ -230,10 +190,7 @@ const allAppDeletes = () => {
   app.delete("/user/:id/delete", (req, res) => {
 
 
-  	//SPECIFIC USER OBJECT
-    let templateVars = {
-      email: req.session.email,
-    }
+
 
     res.redirect("/maps", templateVars);
   });
@@ -247,16 +204,12 @@ const allAppDeletes = () => {
   app.delete("/map/:id/delete", (req, res) => {
 
 
-  	//SPECIFIC MAP USER HYBRID
-    let templateVars = {
-      mapId: "id",
-      email: req.session.email
-    }
+
 
     res.redirect("/user/:id", templateVars);
   });
 }
-allAppDeletes();
+
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
