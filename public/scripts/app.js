@@ -44,6 +44,7 @@ $(document).ready(function () {
   }
 
 
+<<<<<<< HEAD
   $(() => {
     $.ajax({
       method: "GET",
@@ -53,6 +54,17 @@ $(document).ready(function () {
         $("<div>").text(user.name).appendTo($("body"));
       }
     });;
+=======
+$(() => {
+  $.ajax({
+    method: "GET",
+    url: "/api/users"
+  }).done((users) => {
+    for(user of users) {
+      $("<div>").text(user.name).appendTo($("body"));
+      console.log(user);
+    }
+>>>>>>> d856460dd06a05037529011a30f4181658420876
 
      initMap();
 
