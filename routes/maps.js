@@ -13,7 +13,17 @@ module.exports = (knex) => {
 
 
   router.get("/", (req, res) => {
-    res.render('index');
+
+    const knexQuery = knex('markers')
+      .select('*')
+      .then((markers) => {
+        return
+      })
+
+    knexQuery.asCallback((error, results) => {
+
+    res.render('index', {results});
+    });
   });
 
   return router;
