@@ -3,8 +3,8 @@ exports.up = function(knex, Promise) {
     table.increments();
     table.string('name');
     table.string('description');
-    table.decimal('x');
-    table.decimal('y');
+    table.decimal('x', 8, 5);
+    table.decimal('y', 8, 5);
     table.integer('user_id');
   });
 };

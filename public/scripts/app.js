@@ -52,7 +52,6 @@ $(() => {
       $("<div>").text(user.name).appendTo($("body"));
       console.log(user);
     }
-  });;
 
    initMap();
 
