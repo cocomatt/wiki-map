@@ -18,24 +18,14 @@ map.on('click', (e) => {
     })
 }
 
-
-
-
-
-
-
-$(() => {
-  $.ajax({
-    method: "GET",
-    url: "/api/users"
-  }).done((users) => {
-    for(user of users) {
-      $("<div>").text(user.name).appendTo($("body"));
-      console.log(user);
-    }
-  });;
+$(document).ready(function () {
+  function placeMarker(location) {
+   const marker = new google.maps.Marker({
+     position: location,
+     map: map
+   });
+  }
 
   initMap();
 
 });
-
