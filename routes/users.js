@@ -11,7 +11,10 @@ module.exports = (knex) => {
     res.send('index');
   });
 
+
   router.get("/:id", (req, res) => {
     res.send('"it works');
   });
+
+  return router;
 }
