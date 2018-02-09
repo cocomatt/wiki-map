@@ -1,60 +1,31 @@
-function placeMarker(location) {
- const marker = new google.maps.Marker({
-   position: location,
-   map: map
- });
-}
+var newMarker = [];
 
-// --- Creates a map inside the map <div> ---
 function initMap() {
-  const calgary = {lat: 51.044, lng: -114.044};
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: calgary,
-    zoom: 10
-  });
+var map = L.map('map').setView([51.045961 , -114.069135], 13);
 
-  // --- Creates a marker on THIS map ---
-  var marker = new google.maps.Marker({
-    position: {lat: 51, lng: -114},
-    map: map
-  });
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
-// --- Adds marker to THIS map when clicked ---
- google.maps.event.addListener(map, 'click', function(event) {
-   placeMarker(event.latLng);
- });
+L.marker([51.053126, -114.094831]).addTo(map)
+    .bindPopup('Lighthouse Labs at Assembly.')
+    .openPopup();
+
+map.on('click', (e) => {
+        console.log(e.latlng);
+        L.marker(e.latlng).addTo(map)
+        .bindPopup('Place marker here? Yes or No')
+    })
 }
 
-function findMap(id) {
-  knex
-    .select('*')
-    .from('maps')
-    .asCallback((err, rows) => {
-       initSpecificMap(rows)
-    });
-}
+$(document).ready(function () {
+  function placeMarker(location) {
+   const marker = new google.maps.Marker({
+     position: location,
+     map: map
+   });
+  }
 
-function initFoundMap(location) {
-  const location = {lat: location.x, lng: location.y};
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: location,
-    zoom: 10
-  });
-}
-
-
-$(() => {
-  $.ajax({
-    method: "GET",
-    url: "/api/users"
-  }).done((users) => {
-    for(user of users) {
-      $("<div>").text(user.name).appendTo($("body"));
-      console.log(user);
-    }
-  });;
-
-   initMap();
+  initMap();
 
 });
-
