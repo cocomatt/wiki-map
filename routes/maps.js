@@ -5,14 +5,20 @@ const router  = express.Router();
 
 module.exports = (knex) => {
 
-  router.get("/", (req, res) => {
-    knex
-      .select("*")
-      .from("maps")
-      .then((results) => {
-        res.json(results);
-    });
+  router.post("/login", (req, res) => {
+
+    console.log('It works!');
+    res.send('index');
   });
-  
+
+
+  router.get("/", (req, res) => {
+    res.render('index');
+  });
+
   return router;
 }
+
+
+
+
