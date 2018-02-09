@@ -2,21 +2,28 @@
 
 require('dotenv').config();
 
-const PORT        = process.env.PORT || 8080;
-const ENV         = process.env.ENV || "development";
-const express     = require("express");
-const bodyParser  = require("body-parser");
-const sass        = require("node-sass-middleware");
-const app         = express();
+const PORT          = process.env.PORT || 8080;
+const ENV           = process.env.ENV || "development";
+const express       = require("express");
+const bodyParser    = require("body-parser");
+const sass          = require("node-sass-middleware");
+const app           = express();
 
-const knexConfig  = require("./knexfile");
-const knex        = require("knex")(knexConfig[ENV]);
-const morgan      = require('morgan');
-const knexLogger  = require('knex-logger');
+const knexConfig    = require("./knexfile");
+const knex          = require("knex")(knexConfig[ENV]);
+const morgan        = require('morgan');
+const knexLogger    = require('knex-logger');
+const cookieSession = require('cookie-session')
+const bcrypt        = require('bcrypt')
+
+app.use(cookieSession({
+  name: 'session',
+  keys: [process.env.SECRET_KEY || 'dvelopment']
+}))
 
 // Seperated Routes for each Resource
 const usersRoutes = require("./routes/users");
-
+const mapsRoutes  = require("./routes/maps"); 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -37,9 +44,29 @@ app.use(express.static("public"));
 
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));
+app.use("/api/maps", mapsRoutes(knex));
 
 
-const allAppGets = () => {
+const queryEzPz = (table, key, value) => {
+  knex.select("*")
+      .from(`${table}`)
+      .where(`${attribute}, like, ${key}`)
+      .then((result) => {
+        return result;
+  });
+}
+
+
+const loginEzPz = (user, pass) => {
+  knex.selects('*')
+      .from('users')
+      .where({
+        email:    `${user}`,
+        password: `${pass}`
+       })
+      .then((result) => {
+        return result;})
+}
 
 
 
@@ -58,27 +85,10 @@ const allAppGets = () => {
    * 	PROMISES: Show maps, titles and markers even if user isn't logged in
    ************************************************************************/
   app.get("/maps", (req, res) => {
-    //ALL MAPS OBJECT
-    let templateVars = {
-      user: "req.session.id",
-      "id": {
-        mapId: "id",
-        title: "dog map",
-        description: "this is my map",
-        favorite: 0,
-        "markerId": {
-          markerId: "id",
-          x: 0, 
-          y: 0,
-          z: 0,
-          title: "starbucks"
-        }
-      }
-    }
 
-  console.log(templateVars.user);
 
-    res.render("maps", user);
+
+    res.render("maps", {users: queryEzPz(users, email, req.session.id)});
   });
 
 
@@ -88,26 +98,12 @@ const allAppGets = () => {
    * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
    ************************************************************************************/
   app.get("/maps/:id", (req, res) => {
+    let userArr = requestUserParams();
+    let mapArr = requestMapParams();
 
 
-  	//USER ID, ALL MAPS AND MARKERS CONTAINED OBJECT
-    let templateVars = {
-      "id": {
-        mapId: "id",
-        title: "dog map",
-        description: "this is my map",
-        favorite: 0,
-        "markerId": {
-          markerId: "id",
-          x: 0, 
-          y: 0,
-          z: 0,
-          title: "starbucks"
-        }
-      }
-    }
 
-    res.render("maps_id", templateVars);
+    res.render("maps_id", {users: userArr});
   });
 
 
@@ -117,9 +113,11 @@ const allAppGets = () => {
    * 	PROMISES: Specific map shown with title and markers even if user isn't logged in
    *************************************************************************************/
   app.get("/map/:id/new", (req, res) => {
+    let userArr = requestUserParams();
+    let mapArr = requestMapParams();
 
 
-    res.render('new_map');
+    res.render('new_map', {users: userArr});
   });
 
 
@@ -129,26 +127,11 @@ const allAppGets = () => {
    * 	PROMISES: Specific user shown with username, icon, maps created(titles and markers) and maps favroited
    **********************************************************************************************************/
   app.get("/user/:id", (req, res) => {
+    let userArr = requestUserParams();
+    let mapArr = requestMapParams();
 
 
-  	//USER ID, ALL MAPS AND MARKERS CONTAINED OBJECT
-    let templateVars = {
-      "id": {
-        mapId: "id",
-        title: "dog map",
-        description: "this is my map",
-        favorite: 0,
-        "markerId": {
-          markerId: "id",
-          x: 0, 
-          y: 0,
-          z: 0,
-          title: "starbucks"
-        }
-      }
-    }
-
-    res.render("user_id", templateVars);
+    res.render("user_id", {users: userArr});
   });
 
 
@@ -162,10 +145,6 @@ const allAppGets = () => {
 
     res.render("register");
   });
-}
-allAppGets();
-
-
 
 
 

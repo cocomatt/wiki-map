@@ -6,7 +6,7 @@
 <body>
     <h1 id="title">Wiki-Map</h1>
 
-  <% if ( -> user is logged in <- ) { %>
+  <% if ( users != undefined ) { %>
     <h2 id="email"> email </h2>
     <form action="/" method="post">
       <input id="logout_button" type="submit" value="Logout">
