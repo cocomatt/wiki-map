@@ -13,15 +13,8 @@ module.exports = (knex) => {
 
 
   router.get("/", (req, res) => {
-    knex
-      .select('*')
-      .from ('markers')
-      .then((results) => {
-        //console.log('results:', results);
-        //res.json(results);
-        res.render('index', results);
-        console.log(results);
-      })
+
+    res.render('index');
   });
 
   return router;
