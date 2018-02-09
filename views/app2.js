@@ -13,6 +13,7 @@ function initMap() {
 
  google.maps.event.addListener(map, 'click', function(event) {
    placeMarker(event.latLng);
+   console.log('Marker!');
  });
 }
 
@@ -22,7 +23,11 @@ function placeMarker(location) {
    map: map
  });
 }
+
+
 initMap();
+
+
 
 // $(() => {
 //   $.ajax({

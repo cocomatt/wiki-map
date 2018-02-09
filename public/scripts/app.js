@@ -1,10 +1,3 @@
-function placeMarker(location) {
- const marker = new google.maps.Marker({
-   position: location,
-   map: map
- });
-}
-
 // --- Creates a map inside the map <div> ---
 function initMap() {
   const calgary = {lat: 51.044, lng: -114.044};
@@ -22,8 +15,30 @@ function initMap() {
 // --- Adds marker to THIS map when clicked ---
  google.maps.event.addListener(map, 'click', function(event) {
    placeMarker(event.latLng);
+   console.log('placeMarker');
  });
 }
+
+
+function placeMarker(markers) {
+
+
+ const marker = new google.maps.Marker({
+   position: location,
+   map: map
+ });
+
+      for (i =0; i < markers.length; i++) {
+      let lat = markers[i].latitude;
+      let lng = markers[i].longitude;
+      let myLatLng = new google.maps.LatLng(lat, lng);
+
+}
+
+
+
+
+
 
 function findMap(id) {
   knex
