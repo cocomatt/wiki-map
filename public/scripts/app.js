@@ -1,13 +1,15 @@
 var newMarker = [];
 
-function initMap() {
+//var latlng = {"lat":51.053126,"lng":-114.094831};
+
+function initMap(marker) {
 var map = L.map('map').setView([51.045961 , -114.069135], 13);
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-L.marker([51.053126, -114.094831]).addTo(map)
+L.marker(marker).addTo(map)
     .bindPopup('Lighthouse Labs at Assembly.')
     .openPopup();
 
@@ -19,13 +21,18 @@ map.on('click', (e) => {
 }
 
 $(document).ready(function () {
-  function placeMarker(location) {
-   const marker = new google.maps.Marker({
-     position: location,
-     map: map
-   });
-  }
 
-  initMap();
+  knex
+    .select('*')
+    .from ('markers')
+    .then((results) => {
+      console.log(results);
+
+
+    });
+
+
+    initMap();
+
 
 });

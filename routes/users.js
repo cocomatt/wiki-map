@@ -5,6 +5,7 @@ const router  = express.Router();
 
 module.exports = (knex) => {
 
+
   router.post("/login", (req, res) => {
 
     console.log('It works!');
@@ -12,9 +13,12 @@ module.exports = (knex) => {
   });
 
 
+
   router.get("/:id", (req, res) => {
     res.send('"it works');
   });
+
+
 
   return router;
 }
