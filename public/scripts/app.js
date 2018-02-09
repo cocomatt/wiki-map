@@ -1,5 +1,7 @@
 var newMarker = [];
 
+
+
 function initMap() {
 var map = L.map('map').setView([51.045961 , -114.069135], 13);
 
@@ -27,5 +29,5 @@ $(document).ready(function () {
   }
 
   initMap();
-
+  //console.log(JSON.stringify(results));
 });
