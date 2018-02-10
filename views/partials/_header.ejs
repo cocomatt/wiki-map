@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title></title>
-</head>
 <body>
-    <h1 id="title">Wiki-Map</h1>
+  <h1 id="title">Wiki-Map</h1>
 
-  <% if ( users != undefined ) { %>
-    <h2 id="email"> email </h2>
+<!-- If logged in -->
+  <h2 id="email"> {placeholder user email} </h2>
+  <form method="post" action="/login">
+    <p>
+      <label for="email_field">Email</label>
+      <input id="email_field" name="user[email]">
+    </p>
+    <p>
+      <label for="password_field">Password</label>
+      <input id="password_field" name="user[password]">
+      <input class="button" type="submit" value="Submit">
+    </p>
+
+<!-- else (not logged in) -->
+
     <form action="/" method="post">
-      <input id="logout_button" type="submit" value="Logout">
+      <input class="button" type="submit" value="Logout">
     </form>
 
-  <% } else { %>
-    <form action="/" method="post">
-      <label for="search-input">Search:</label>
-      <input name="search" id="logout_button">
-      <input type="submit" value="Logout">
-    </form>
 
-    <% } %>
 
 </body>
 </html>

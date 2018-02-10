@@ -12,7 +12,6 @@ module.exports = (knex) => {
   });
 
   router.get("/", (req, res) => {
-
     res.render('index');
   });
 
