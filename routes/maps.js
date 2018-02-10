@@ -5,24 +5,11 @@ const router  = express.Router();
 
 module.exports = (knex) => {
 
-  router.post("/login", (req, res) => {
-
-    console.log('It works!');
-    res.send('index');
-  });
-
-  router.get("/", (req, res) => {
-
-
-    res.render('index');
-    res.redirect('/maps');
-  });
-
   router.get(`/`, (req, res) => {
 
+    let users = "jesse";
 
-    res.render('index');
-    res.redirect('/maps');
+    res.render('index', {users});
   });
   return router;
 }

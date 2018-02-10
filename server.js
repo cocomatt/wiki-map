@@ -23,12 +23,13 @@ app.use(cookieSession({
 
 
 // LOCAL FILE REQUESTS
+const bootstrapTest = require('./routes/bootstrapTest')
+
 const routes        = require('./routes/root');
 const usersRoutes   = require('./routes/users');
 const mapsRoutes    = require('./routes/maps');
 const markersRoutes = require('./routes/markers');
-const bootstrapTest = require('./routes/bootstrapTest')
-
+const signupRoutes	= require('./routes/signup');
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -55,6 +56,7 @@ app.use("/", routes(knex));
 app.use("/users", usersRoutes(knex));
 app.use("/maps", mapsRoutes(knex));
 app.use("/markers", markersRoutes(knex));
+app.use("/signup", signupRoutes(knex));
 
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
