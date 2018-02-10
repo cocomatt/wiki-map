@@ -17,6 +17,8 @@ module.exports = (knex) => {
 
 
   router.get("/:map_id", (req, res) => {
+    //TODO
+
     res.render('show_map');
   });
 
