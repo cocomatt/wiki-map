@@ -4,7 +4,7 @@ const newMarker = [];
 const latlng = {"lat":51.053126,"lng":-114.094831};
 
 function initMap(markers, description) {
-  const  map = L.map('map').setView([51.045961 , -114.069135], 13);
+  const  map = L.map('map').setView([51.045961 , -114.069135], 13);      //zoom 10 first whole city in view, 20 zoom in all the way
 
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
