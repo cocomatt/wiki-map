@@ -3,24 +3,33 @@ const newMarker = [];
 
 const latlng = {"lat":51.053126,"lng":-114.094831};
 
-function initMap(marker) {
-const  map = L.map('map').setView([51.045961 , -114.069135], 13);
+function initMap(marker, description) {
+  const  map = L.map('map').setView([51.045961 , -114.069135], 13);
 
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+    }).addTo(map);
 
-L.marker(latlng).addTo(map)
-    .bindPopup('Lighthouse Labs at Assembly.')
+  L.marker(marker).addTo(map)
+    .bindPopup(description)
     .openPopup();
 
-map.on('click', (e) => {
-        console.log(e.latlng);
-        L.marker(e.latlng).addTo(map)
-        .bindPopup('Place marker here? Yes or No')
-    })
+  map.on('click', (e) => {
+    console.log(e.latlng);
+    L.marker(e.latlng).addTo(map)
+    .bindPopup('Place marker here? Yes or No')
+  })
 }
 
+function generateMarkers(markers) {
+  markers.forEach(function(val, index) {
+      L.marker(markers[index]).addTo(map)
+      .bindPopup(description)
+      .openPopup();
+
+  })
+  initMap();
+}
 
 
 
@@ -29,9 +38,8 @@ $(document).ready(function () {
     url: '/markers',
     method: 'GET',
     success: function(markers) {
-      $('#tweets-container').empty();
       console.log("success");
-      initMap(markers);
+      generateMarkers(markers);
     },
     error: function(err) {
       console.log(err);

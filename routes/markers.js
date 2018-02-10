@@ -9,6 +9,7 @@ module.exports = (knex) => {
     knex
       .select("*")
       .from("markers")
+      .where("id", 2)
       .then((results) => {
         res.json(results);
       });
