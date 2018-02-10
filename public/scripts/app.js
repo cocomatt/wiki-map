@@ -1,9 +1,10 @@
-var newMarker = [];
+const newMarker = [];
 
-latlng = {"lat":51.053126,"lng":-114.094831};
+
+const latlng = {"lat":51.053126,"lng":-114.094831};
 
 function initMap(marker) {
-var map = L.map('map').setView([51.045961 , -114.069135], 13);
+const  map = L.map('map').setView([51.045961 , -114.069135], 13);
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -20,23 +21,23 @@ map.on('click', (e) => {
     })
 }
 
+
+
+
 $(document).ready(function () {
   $.ajax({
-    url: '/tweets',
+    url: '/markers',
     method: 'GET',
-    success: function(tweets) {
+    success: function(markers) {
       $('#tweets-container').empty();
       console.log("success");
-      renderTweets(tweets);
+      initMap(markers);
     },
     error: function(err) {
       console.log(err);
     }
   });
 
-
-
-    initMap();
 
 
 });
