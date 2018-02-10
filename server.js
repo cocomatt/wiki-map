@@ -49,16 +49,6 @@ app.use("/users", usersRoutes(knex));
 app.use("/maps", mapsRoutes(knex));
 app.use("/markers", markersRoutes(knex));
 
-
-
-
-  app.get("/", (req, res) => {
-    res.redirect('/maps');
-  });
-
-
-
-
 app.listen(PORT, () => {
   console.log("Example app listening on port " + PORT);
 });
