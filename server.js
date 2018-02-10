@@ -14,17 +14,20 @@ const knex          = require('knex')(knexConfig[ENV]);
 const morgan        = require('morgan');
 const knexLogger    = require('knex-logger');
 const cookieSession = require('cookie-session')
-//const bcrypt        = require('bcrypt')
+const bcrypt        = require('bcrypt')
 
 app.use(cookieSession({
   name: 'session',
   keys: ['user_id']
 }))
 
-// Seperated Routes for each Resource
-const usersRoutes = require('./routes/users');
-const mapsRoutes = require('./routes/maps');
-const markersRoutes = require('./routes/markers')
+
+// LOCAL FILE REQUESTS
+const routes        = require('./routes/root');
+const usersRoutes   = require('./routes/users');
+const mapsRoutes    = require('./routes/maps');
+const markersRoutes = require('./routes/markers');
+const bootstrapTest = require('./routes/bootstrapTest')
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -44,7 +47,11 @@ app.use('/styles', sass({
 }));
 app.use(express.static("public"));
 
-// Mount all resource routes
+// URL REQUESTS
+//To see the bootstrap test example go to: http://localhost:8080/bootstrapTest
+app.use('/bootstrapTest', bootstrapTest(knex));
+
+app.use("/", routes(knex));
 app.use("/users", usersRoutes(knex));
 app.use("/maps", mapsRoutes(knex));
 app.use("/markers", markersRoutes(knex));

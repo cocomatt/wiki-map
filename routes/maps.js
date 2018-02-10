@@ -13,12 +13,16 @@ module.exports = (knex) => {
 
   router.get("/", (req, res) => {
 
+
     res.render('index');
+    res.redirect('/maps');
   });
 
+  router.get(`/`, (req, res) => {
+
+
+    res.render('index');
+    res.redirect('/maps');
+  });
   return router;
 }
-
-
-
-

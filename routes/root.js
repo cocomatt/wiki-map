@@ -6,13 +6,12 @@ const router  = express.Router();
 module.exports = (knex) => {
 
   router.get("/", (req, res) => {
-    knex
-      .select("*")
-      .from("user_maps")
-      .then((results) => {
-        res.json(results);
-    });
+    res.redirect('/maps');
   });
 
   return router;
 }
+
+
+
+
