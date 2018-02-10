@@ -1,5 +1,6 @@
 const newMarker = [];
 
+
 const latlng = {"lat":51.053126,"lng":-114.094831};
 
 function initMap(marker) {
@@ -20,8 +21,23 @@ map.on('click', (e) => {
     })
 }
 
-$(document).ready(function () {
 
-    initMap();
+
+
+$(document).ready(function () {
+  $.ajax({
+    url: '/markers',
+    method: 'GET',
+    success: function(markers) {
+      $('#tweets-container').empty();
+      console.log("success");
+      initMap(markers);
+    },
+    error: function(err) {
+      console.log(err);
+    }
+  });
+
+
 
 });
