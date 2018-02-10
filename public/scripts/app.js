@@ -1,19 +1,21 @@
 
-function initIndexMaps(markers, description) {
-  const map = L.map('map').setView([51.045961 , -114.069135], 13);      //zoom 10 first whole city in view, 20 zoom in all the way
+function initMap(markers, description) {
+  const  map1 = L.map('map1').setView([51.045961 , -114.069135], 13);      //zoom 10 first whole city in view, 20 zoom in all the way
 
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    }).addTo(map1);
 
-  const map2 = L.map('map2').setView([51.045961 , -114.069135], 10);
+const  map2 = L.map('map2').setView([51.045961 , -114.069135], 20);      //zoom 10 first whole city in view, 20 zoom in all the way
+
 
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map2);
 
-// --- Renders all markers from markers table to map ---
+  // --- Renders all markers from markers table to map ---
   markers.forEach(function(val, index) {
+
     L.marker(markers[index].latlng).addTo(map)
         .bindPopup(markers[index].description)
         .openPopup();
