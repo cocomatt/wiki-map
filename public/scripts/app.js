@@ -1,26 +1,32 @@
-const newMarker = [];
 
+function initIndexMaps(markers, description) {
+  const  map1 = L.map('map1').setView([51.045961 , -114.069135], 13);      //zoom 10 first whole city in view, 20 zoom in all the way
 
-const latlng = {"lat":51.053126,"lng":-114.094831};
-
-function initMap(marker) {
-const  map = L.map('map').setView([51.045961 , -114.069135], 13);
-
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+    }).addTo(map1);
 
-L.marker(latlng).addTo(map)
-    .bindPopup('Lighthouse Labs at Assembly.')
-    .openPopup();
+const  map2 = L.map('map2').setView([51.045961 , -114.069135], 20);      //zoom 10 first whole city in view, 20 zoom in all the way
 
-map.on('click', (e) => {
-        console.log(e.latlng);
-        L.marker(e.latlng).addTo(map)
-        .bindPopup('Place marker here? Yes or No')
-    })
+
+  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map2);
+
+  // --- Renders all markers from markers table to map ---
+  markers.forEach(function(val, index) {
+
+    L.marker(markers[index].latlng).addTo(map1)
+        .bindPopup(markers[index].description)
+        .openPopup();
+  })
+
+  map.on('click', (e) => {
+    console.log(e.latlng);
+    L.marker(e.latlng).addTo(map1)
+    .bindPopup('Place marker here? Yes or No')
+  })
 }
-
 
 
 
@@ -29,15 +35,13 @@ $(document).ready(function () {
     url: '/markers',
     method: 'GET',
     success: function(markers) {
-      $('#tweets-container').empty();
       console.log("success");
-      initMap(markers);
+      initIndexMaps(markers);
     },
     error: function(err) {
       console.log(err);
     }
   });
-
 
 
 });

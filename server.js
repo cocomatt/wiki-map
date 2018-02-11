@@ -22,6 +22,7 @@ app.use(cookieSession({
 }))
 
 
+<<<<<<< HEAD
 // LOCAL FILE REQUESTS
 const bootstrapTest = require('./routes/bootstrapTest')
 
@@ -30,6 +31,9 @@ const usersRoutes   = require('./routes/users');
 const mapsRoutes    = require('./routes/maps');
 const markersRoutes = require('./routes/markers');
 const signupRoutes	= require('./routes/signup');
+=======
+
+>>>>>>> 83189b59ab046d48bf4d8f388fe00e2a7f2df5ae
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
