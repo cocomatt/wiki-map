@@ -6,6 +6,7 @@ function initIndexMaps(markers) {
   const map1Pos = markers[0].map_latlng;
   const map1Zoom = markers[0].map_zoom;
   const map1Id = markers[0].map_id;
+  const map1Title = markers[0].map_title;
 
   let map2Data = [];
   let map3Data = [];
@@ -16,7 +17,8 @@ function initIndexMaps(markers) {
       const map2Zoom = markers[i].map_zoom;
       const map2Check = markers[i].map_id;
       const map2Id = markers[i].map_id;
-      map2Data.push(map2Pos, map2Zoom, map2Check, map2Id);
+      const map2Title = markers[i].map_title;
+      map2Data.push(map2Pos, map2Zoom, map2Check, map2Id, map2Title);
       break;
     };
   };
@@ -25,7 +27,8 @@ function initIndexMaps(markers) {
       const map3Pos = markers[i].map_latlng;
       const map3Zoom = markers[i].map_zoom;
       const map3Id = markers[i].map_id;
-      map3Data.push(map3Pos, map3Zoom, map3Id);
+      const map3Title = markers[i].map_title;
+      map3Data.push(map3Pos, map3Zoom, map3Id, map3Title);
       break;
     };
   };
@@ -33,18 +36,21 @@ function initIndexMaps(markers) {
 // --- Rendering the maps ---
   const  map1 = L.map('map1').setView(map1Pos, map1Zoom);      //zoom 10 first whole city in view, 20 zoom in all the way
 
+  $('#map1_title').prepend(map1Title);
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map1);
 
-  const  map2 = L.map('map2').setView(map2Data[0], map2Data[1]);      //zoom 10 first whole city in view, 20 zoom in all the way
+  const  map2 = L.map('map2').setView(map2Data[0], map2Data[1]);
 
+  $('#map2_title').prepend(map2Data[4]);
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map2);
 
-  const  map3 = L.map('map3').setView(map3Data[0], map3Data[1]);      //zoom 10 first whole city in view, 20 zoom in all the way
+  const  map3 = L.map('map3').setView(map3Data[0], map3Data[1]);
 
+  $('#map3_title').prepend(map3Data[3]);
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map3);
@@ -84,6 +90,7 @@ $(document).ready(function () {
       method: 'GET',
       success: function(markers) {
         initIndexMaps(markers);
+
       },
       error: function(err) {
         console.log(err);
