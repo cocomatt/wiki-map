@@ -15,8 +15,8 @@ module.exports = (knex) => {
     res.render('index');
   });
 
-  //--- GET all maps AND MARKER table data ordered by created last and matching markers ---
-  router.get("/index_maps", (req, res) => {
+  //--- GET all MAPS AND MARKER table data ordered by created last and matching markers ---
+  router.get("/data/index_maps", (req, res) => {
     knex('markers')
       .join('maps', 'markers.map_id', '=', 'maps.id')
       .select('*')
@@ -24,6 +24,16 @@ module.exports = (knex) => {
       .then((results) => {
         res.json(results);
       });
+  });
+  //------------------------------------------------------------------------
+
+  //--- renders a specific map's show page ---
+  router.get('/:map_id', (req, res) => {
+    let templateVars = {
+      mapID: req.params.map_id,
+    };
+
+    res.render('show_map', templateVars);
   });
 
   //--- GET maps and marker data for specific map ---
