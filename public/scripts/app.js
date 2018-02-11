@@ -86,7 +86,7 @@ function initIndexMaps(markers) {
 $(document).ready(function () {
 
   $.ajax({
-      url: '/maps/index_maps',
+      url: '/maps/data/index_maps',
       method: 'GET',
       success: function(markers) {
         initIndexMaps(markers);
