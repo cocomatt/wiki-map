@@ -2,24 +2,9 @@
 
 const express = require('express');
 const router  = express.Router();
+const bcrypt  = require('bcrypt');
 
 module.exports = (knex) => {
-
-  router.post('/login', (req, res) => {
-
-	console.log("Login Happened", req.body.email, req.session.user_id);
-
-    knex("users").where(req.body.email, "password")
-               .then((userPassword) => {
-
-      if (bcrypt.compareSync(req.body.password, userPassword)) {
-        req.session.user_id = users[user].id;
-      } else {
-        req.session.user_id = null;
-      }
-    });
-    res.redirect('/users');
-  });
 
 
 	router.post('/', (req, res) => {
@@ -32,8 +17,9 @@ module.exports = (knex) => {
 	    } else {
 	      let newUserId = generateRandomString()
 
-		console.log("Signup Happened", UserId);
+		console.log("Signup Happened", newUserId);
 		
+		//INSERT NEW USER ONTO SERVER
 		knex.insert([{id: newUserId, 
 					  email: req.body.email, 
 					  password: bcrypt.hashSync(req.body.password, 10)}])
@@ -45,48 +31,6 @@ module.exports = (knex) => {
 
 	    res.redirect('/users');
 	});
-
-
-	const checkEmailExists = (email) => {
-
-		console.log("Signup Happened", email);
-
-	  knex("users").where(email, "password")
-	               .then((userEmail) => {
-
-	    if (userEmail === email) {
-	      return true
-	    }
-	    return false
-	  });
-	}
-
-
-	function generateRandomString () {
-
-		console.log("String Generated");
-
-	  const lengthOfStringGenerated = 6;
-	  const charsAllowedInString = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-	  // let userId = false;
-	  // while(userId === false) {
-		  let randomlyGeneratedString = ''
-		  for (let i = lengthOfStringGenerated; i > 0; --i) {
-		   	randomlyGeneratedString += charsAllowedInString[Math.floor(Math.random() * charsAllowedInString.length)]
-		  }
-
-		  // knex("users").where("id")
-		  //              .then((Id) => {
-
-		  //   if(randomlyGeneratedString !== Id) {
-		  //   	userId === true;
-		  //   }
-		 //  });
-	  // }
-
-	  return randomlyGeneratedString
-	}
 
 
   router.get("/", (req, res) => {
