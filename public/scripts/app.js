@@ -5,6 +5,7 @@ function initIndexMaps(markers) {
 // --- This is choosing the first three UNIQUE map_IDs to render to the three maps ---
   const map1Pos = markers[0].map_latlng;
   const map1Zoom = markers[0].map_zoom;
+  const map1Id = markers[0].map_id;
 
   let map2Data = [];
   let map3Data = [];
@@ -14,7 +15,8 @@ function initIndexMaps(markers) {
       const map2Pos = markers[i].map_latlng;
       const map2Zoom = markers[i].map_zoom;
       const map2Check = markers[i].map_id;
-      map2Data.push(map2Pos, map2Zoom, map2Check);
+      const map2Id = markers[i].map_id;
+      map2Data.push(map2Pos, map2Zoom, map2Check, map2Id);
       break;
     };
   };
@@ -22,7 +24,8 @@ function initIndexMaps(markers) {
     if (markers[i].map_id != markers[0].map_id && markers[i].map_id != map2Data[2]) {
       const map3Pos = markers[i].map_latlng;
       const map3Zoom = markers[i].map_zoom;
-      map3Data.push(map3Pos, map3Zoom);
+      const map3Id = markers[i].map_id;
+      map3Data.push(map3Pos, map3Zoom, map3Id);
       break;
     };
   };
@@ -46,22 +49,30 @@ function initIndexMaps(markers) {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map3);
 
-  // --- Renders all markers from markers table to map ---
-  // maps.forEach(function(val, index) {
-  //   if (maps[index].id == maps[index].map_id) {
+  // --- Renders markers that belong to each map ---
 
-  //     L.marker(maps[index].latlng).addTo(map1)
-  //         .bindPopup(markers[index].description)
-  //         .openPopup();
-  //   }
+  markers.forEach(function(val, index) {
+    if (markers[index].id == map1Id) {
+      L.marker(markers[index].marker_latlng).addTo(map1)
+          .bindPopup(markers[index].marker_description)
+          .openPopup();
+    } else if (markers[index].id == map2Data[3]) {
+      L.marker(markers[index].marker_latlng).addTo(map2)
+          .bindPopup(markers[index].marker_description)
+          .openPopup();
+    } else if (markers[index].id == map3Data[2]) {
+      L.marker(markers[index].marker_latlng).addTo(map3)
+          .bindPopup(markers[index].marker_description)
+          .openPopup();
+    };
 
-  // })
+  });
 
-  // map.on('click', (e) => {
-  //   console.log(e.latlng);
-  //   L.marker(e.latlng).addTo(map1)
-  //   .bindPopup('Place marker here? Yes or No')
-  // })
+  map1.on('click', (e) => {
+    console.log(e.latlng);
+    L.marker(e.latlng).addTo(map1)
+    .bindPopup('Place marker here? Yes or No')
+  })
 }
 
 
