@@ -1,8 +1,8 @@
 //TODO refactor this maybe
 function initIndexMaps(markers) {
 
-// --- Super hacky code below -
-// --- This is choosing the first three UNIQUE map_IDs to render to the three maps ---
+  // --- Super hacky code below -
+  // --- This is choosing the first three UNIQUE maps to render to the three maps ---
   const map1Pos = markers[0].map_latlng;
   const map1Zoom = markers[0].map_zoom;
   const map1Id = markers[0].map_id;
@@ -33,7 +33,7 @@ function initIndexMaps(markers) {
     };
   };
 
-// --- Rendering the maps ---
+  // --- Rendering the maps ---
   const  map1 = L.map('map1').setView(map1Pos, map1Zoom);      //zoom 10 first whole city in view, 20 zoom in all the way
 
   $('#map1_title').prepend(map1Title);
@@ -56,7 +56,6 @@ function initIndexMaps(markers) {
     }).addTo(map3);
 
   // --- Renders markers that belong to each map ---
-
   markers.forEach(function(val, index) {
     if (markers[index].id == map1Id) {
       L.marker(markers[index].marker_latlng).addTo(map1)
@@ -74,12 +73,13 @@ function initIndexMaps(markers) {
 
   });
 
-  map1.on('click', (e) => {
-    console.log(e.latlng);
-    L.marker(e.latlng).addTo(map1)
-    .bindPopup('Place marker here? Yes or No')
-  })
+  // map1.on('click', (e) => {
+  //   console.log(e.latlng);
+  //   L.marker(e.latlng).addTo(map1)
+  //   .bindPopup('Place marker here? Yes or No')
+  // })
 }
+
 
 
 
