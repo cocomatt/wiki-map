@@ -23,6 +23,12 @@ function renderMap(mapData) {
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+
+  mapData.forEach(function(val,index) {
+    L.marker(mapData[index].marker_latlng).addTo(map)
+      .bindPopup(mapData[index].marker_description)
+      .openPopup();
+  });
 }
 
 
