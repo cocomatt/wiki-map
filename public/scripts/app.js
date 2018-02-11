@@ -53,7 +53,7 @@ $(document).ready(function () {
       url: '/maps/index_maps',
       method: 'GET',
       success: function(maps) {
-        initIndexMaps([maps[0], maps[1], maps[2]]);
+        initIndexMaps([ maps[0], maps[1], maps[2]]);
       },
       error: function(err) {
         console.log(err);

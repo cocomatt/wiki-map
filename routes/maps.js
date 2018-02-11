@@ -18,11 +18,12 @@ module.exports = (knex) => {
 //THIS NEEDS TO RETURN JASON WITH INFO FROM BOTH
 //GET all maps AND MARKER table data ordered by created last and matching markers
   router.get("/index_maps", (req, res) => {
-    knex('maps')
+    knex('markers')
+      .join('maps', 'markers.map_id', '=', 'maps.id')
       .select('*')
-      .orderBy('id', 'desc')
-      .then((maps) => {
-        res.json(maps);
+      .orderBy('maps.id', 'desc')
+      .then((results) => {
+        res.json(results);
       });
   });
 
