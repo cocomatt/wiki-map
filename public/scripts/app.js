@@ -10,6 +10,7 @@ function initIndexMaps(markers) {
 
   let map2Data = [];
   let map3Data = [];
+  let map3Data = [];
 
   for (let i = 0; i < markers.length; i++) {
     if (markers[i].map_id != markers[0].map_id) {
@@ -26,9 +27,19 @@ function initIndexMaps(markers) {
     if (markers[i].map_id != markers[0].map_id && markers[i].map_id != map2Data[2]) {
       const map3Pos = markers[i].map_latlng;
       const map3Zoom = markers[i].map_zoom;
+      const map3Check = markers[i].map_id;
       const map3Id = markers[i].map_id;
       const map3Title = markers[i].map_title;
       map3Data.push(map3Pos, map3Zoom, map3Id, map3Title);
+      break;
+    };
+  for (let i = 0; i < markers.length; i++) {
+    if (markers[i].map_id != markers[0].map_id && markers[i].map_id != map2Data[2] && markers[i].map_id != map2Data[3]) {
+      const map4Pos = markers[i].map_latlng;
+      const map4Zoom = markers[i].map_zoom;
+      const map4Id = markers[i].map_id;
+      const map4Title = markers[i].map_title;
+      map4Data.push(map4Pos, map4Zoom, map4Id, map4Title);
       break;
     };
   };
@@ -55,6 +66,13 @@ function initIndexMaps(markers) {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map3);
 
+  const  map4 = L.map('map4').setView(map4Data[0], map4Data[1]);
+
+    $('#map4_title').prepend(map4Data[3]);
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map4);
+
   // --- Renders markers that belong to each map ---
   markers.forEach(function(val, index) {
     if (markers[index].id == map1Id) {
@@ -69,8 +87,11 @@ function initIndexMaps(markers) {
       L.marker(markers[index].marker_latlng).addTo(map3)
           .bindPopup(markers[index].marker_description)
           .openPopup();
-    };
-
+    } else if (markers[index].id == map4Data[2]) {
+      L.marker(markers[index].marker_latlng).addTo(map4)
+          .bindPopup(markers[index].marker_description)
+          .openPopup();
+    }
   });
 
   // map1.on('click', (e) => {
@@ -171,7 +192,7 @@ $(document).ready(function () {
       }
     })
 
-    $(formMessage).val('') 
+    $(formMessage).val('')
   }
 
   function main () {
