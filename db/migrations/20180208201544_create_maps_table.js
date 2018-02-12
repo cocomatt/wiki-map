@@ -1,10 +1,10 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('maps', function (table) {
     table.increments();
-    table.string('title');
-    table.string('description');
-    table.json('latlng');
-    table.integer('zoom');
+    table.string('map_title');
+    table.string('map_description');
+    table.json('map_latlng');
+    table.integer('map_zoom');
     table.integer('user_id');
   });
 };
