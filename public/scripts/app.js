@@ -84,7 +84,7 @@ function initIndexMaps(markers) {
 
 
 $(document).ready(function () {
-
+  jQuery("time.timeago").timeago();
   $.ajax({
       url: '/maps/data/index_maps',
       method: 'GET',
@@ -97,5 +97,110 @@ $(document).ready(function () {
       }
     });
 
+  function escape (str) {
+    const div = document.createElement('div')
+    div.appendChild(document.createTextNode(str))
+    return div.innerHTML
+  }
 
+  function renderPredefinedCSS (htmlToRender, deckNum) {
+    const postElementToBeRenderedBy = document.getElementById(`card-deck-${deckNum}`)
+    postElementToBeRenderedBy.insertAdjacentHTML('afterbegin', htmlToRender)
+  }
+
+
+  function createMapPostElement (post, positionIncrementer) {
+    let htmlStr = ''
+    htmlStr =  `<div class="card bg-light">
+                  <div class="card-header" id="map-${positionIncrementer}" style="height: 348px;"></div>
+                    <div class="card-body">
+                      <h4 class="title text-centre" id="maptitle_${positionIncrementer}"></h4>
+                      <h6 class="card-subtitle mb-4 text-muted">@${userHandle}</h6>
+                      <p class="card-text ${escape()}"></p>
+                      <a href="/${pageSpawnedOn}" class="btn btn-danger p-2" style="width: 90px;"><strong>Fave It!</strong></a>
+                      <a href="/map/${mapId}" class="btn btn-danger p-2" style="width: 90px;"><strong>Edit It!</strong></a>
+                    </div>
+                    <div class="card-footer">
+                     <small class="text-muted">Last updated ${jQuery.timeago(jQuery.now())}</small>
+                  </div>
+                </div> `
+
+    return htmlStr
+  }
+
+  function renderPosts (posts) {
+    let mapPostElement;
+    let positionIncrementer = 2;
+    let deckNum;
+    let newDeck;
+
+    posts.reverse().forEach((post) => {
+      mapPostElement = createPostElement(post, positionIncrementer)
+
+      renderPredefinedCSS(mapPostElement, deckNum);
+
+      positionIncrementer++
+      if(positionIncrementer = 3) {
+        deckNum ++;
+        newDeck = `<div class="card-deck m-2" id="card-deck-${deckNum}">
+                   </div id="end-deck-${deckNum}">`;
+        const postElementToBeRenderedBy = document.getElementById(`end-deck-${deckNum}`)
+        postElementToBeRenderedBy.insertAdjacentHTML('afterbegin', newDeck)
+
+      }
+    })
+  }
+
+  function updatePosts (formId) {
+    $.ajax({
+      urlOne: $(formId).attr('action'),
+      method: 'GET',
+      success: function (posts) {
+        renderPosts(posts)
+      }
+    })
+  }
+
+  function submitPostsClearTextField (formId, formMessage) {
+    $.ajax({
+      urlOne: $(formId).attr('action'),
+      type: 'POST',
+      dataOne: $(formId).serialize(),
+      success: function () {
+        updatePosts(formId)
+      }
+    })
+
+    $(formMessage).val('') 
+  }
+
+  function main () {
+    let formId = '#submit-post'
+    let formMessage = '#new-post-textarea[name|="text"]'
+    let formText = $('#new-post-textarea[name|="text"]').val()
+
+
+    $(formIdOne).on('submit', function (event) {
+      event.preventDefault()
+
+      if (formText.length > 140) {
+        alert(`Message is longer than 140 characters, ${formText.length}.`)
+        return 0
+      }
+      if ($(formMessage).val() === '') {
+        alert(`Please write a message before attempting to tweet!`)
+        return 0
+      }
+      if ($(formMessage).val() === false) {
+        alert(`Message is invalid.`)
+        return 0
+      }
+
+      submitMapClearTextField(formId, formMessage)
+    })
+
+    updatePosts(formId);
+  }
+
+  main()
 });
