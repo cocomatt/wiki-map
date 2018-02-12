@@ -10,6 +10,11 @@ function renderMap(mapData) {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+  map.on('click', (e) => {
+    console.log(e.latlng);
+    L.marker(e.latlng).addTo(map)
+    .bindPopup('Place marker here? Yes or No')
+  });
   // mapData.forEach(function(val,index) {
   //   L.marker(mapData[index].marker_latlng).addTo(map)
   //     .bindPopup(mapData[index].marker_description)
