@@ -2,24 +2,36 @@
 
 const express = require('express');
 const router  = express.Router();
+const session = require('./Manager');
 
 module.exports = (knex) => {
 
-  router.get(`/`, (req, res) => {
-
-<<<<<<< HEAD
-    let users = "jesse";
-
-    res.render('index', {users});
+  router.post('/logout', (req, res) => {
+    req.session.user_id = undefined;
+    let templateVars = session.Manager(req, res, 'maps');
+      console.log(res.body);
+    res.redirect(`/${templateVars.users.url}`);
   });
-=======
-    console.log('It works!');
-    res.render('index');
+
+  router.post('/login', (req, res) => {
+    let templateVars = session.Manager(req, res, 'maps');
+      console.log(res.body);
+    res.redirect(`/${templateVars.users.url}`);
   });
 
   router.get("/", (req, res) => {
-    res.render('index');
+    let templateVars = session.Manager(req, res, "maps");
+      console.log(res.body);
+    res.render('index', templateVars);
   });
+
+  router.get('/:map_id', (req, res) => {
+    let templateVars = session.Manager(req, res, req.params.map_id);
+      console.log(res.body);
+    res.render('show_map', templateVars);
+  });
+
+
 
   //--- GET all MAPS AND MARKER table data ordered by created last and matching markers ---
   router.get("/data/index_maps", (req, res) => {
@@ -30,16 +42,6 @@ module.exports = (knex) => {
       .then((results) => {
         res.json(results);
       });
-  });
-  //------------------------------------------------------------------------
-
-  //--- renders a specific map's show page ---
-  router.get('/:map_id', (req, res) => {
-    let templateVars = {
-      mapID: req.params.map_id,
-    };
-
-    res.render('show_map', templateVars);
   });
 
   //--- GET maps and marker data for specific map ---
@@ -56,6 +58,5 @@ module.exports = (knex) => {
       });
   });
 
->>>>>>> 83189b59ab046d48bf4d8f388fe00e2a7f2df5ae
   return router;
 }

@@ -2,59 +2,28 @@
 
 const express = require('express');
 const router  = express.Router();
+const session = require('./Manager')
 
 module.exports = (knex) => {
 
-
   router.post('/logout', (req, res) => {
     req.session.user_id = undefined;
-    res.redirect('/');
+    let templateVars = session.Manager(req, res, 'users');
+    res.redirect(`/${templateVars.users.url}`);
   });
-
-
 
   router.post('/login', (req, res) => {
-    console.log(req.body.email, req.body.password);
-
-
-    knex('users')
-      .where({ email: req.body.email })
-      .select('password')
-      .then(function(result) {
-        if (!result || !result[0])  {  // not found!
-          console.log("USER WAS NOT FOUND")
-          return;
-        }
-        var pass = result[0].password;
-        if (req.body.password === pass) {
-          console.log("USER LOGGED IN")
-        } else {
-          console.log("USER FAILED PASSWORD")
-        }
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    let templateVars = session.Manager(req, res, 'users');
+    res.redirect(`/${templateVars.users.url}`);
   });
-
-    // if ((results[user].email === req.body.email) 
-    //   && bcrypt.compareSync(req.body.password, userDatabase[user].password)) {
-
-    // }
-
 
   router.get("/", (req, res) => {
-
-      let templateVars = {
-        'users': {
-          users: req.session.user_id,
-          url: encodeURIComponent("users")
-        }
-      }
-      console.log(templateVars);
-      res.render('users', templateVars);
+    let templateVars = session.Manager(req, res, "users");
+    res.render('users', templateVars);
   });
+
 
 
   return router;
+
 }

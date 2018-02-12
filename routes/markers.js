@@ -4,6 +4,7 @@ const express = require('express');
 const router  = express.Router();
 
 module.exports = (knex) => {
+  
   // GET all markers
   router.get("/", (req, res) => {
     knex

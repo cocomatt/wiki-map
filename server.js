@@ -2,8 +2,8 @@
 
 require('dotenv').config();
 
-const PORT          = process.env.PORT || 8080;
 const ENV           = process.env.ENV || 'development';
+const PORT          = process.env.PORT || 8080;
 const express       = require('express');
 const bodyParser    = require('body-parser');
 const sass          = require('node-sass-middleware');
@@ -21,19 +21,13 @@ app.use(cookieSession({
   keys: ['user_id']
 }))
 
-
-<<<<<<< HEAD
 // LOCAL FILE REQUESTS
-const bootstrapTest = require('./routes/bootstrapTest')
-
 const routes        = require('./routes/root');
 const usersRoutes   = require('./routes/users');
 const mapsRoutes    = require('./routes/maps');
 const markersRoutes = require('./routes/markers');
 const signupRoutes	= require('./routes/signup');
-=======
 
->>>>>>> 83189b59ab046d48bf4d8f388fe00e2a7f2df5ae
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
@@ -51,10 +45,6 @@ app.use('/styles', sass({
   outputStyle: 'expanded'
 }));
 app.use(express.static("public"));
-
-// URL REQUESTS
-//To see the bootstrap test example go to: http://localhost:8080/bootstrapTest
-app.use('/bootstrapTest', bootstrapTest(knex));
 
 app.use("/", routes(knex));
 app.use("/users", usersRoutes(knex));
