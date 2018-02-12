@@ -15,6 +15,16 @@ module.exports = (knex) => {
     res.render('index');
   });
 
+
+
+  router.get('/new', (req, res) => {
+
+
+    res.render('new');
+  });
+
+
+
   //--- GET all MAPS AND MARKER table data ordered by created last and matching markers ---
   router.get("/data/index_maps", (req, res) => {
     knex('markers')
@@ -49,6 +59,7 @@ module.exports = (knex) => {
         res.json(results);
       });
   });
+
 
   return router;
 }
